@@ -1,0 +1,5 @@
+#!/bin/bash
+# grim /tmp/shot.png
+# convert /tmp/shot.png -blur 0x8 /tmp/shot_blurred.jpg
+wlogout --protocol layer-shell
+# rm /tmp/shot_blurred.jpg
