@@ -7,7 +7,7 @@
 }
 
 window {
-    background: radial-gradient(alpha(@shadow, 0.9), transparent);
+    background: radial-gradient(alpha(@shadow, 0.7), transparent);
 }
 
 button {
