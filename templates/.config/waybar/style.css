@@ -1,0 +1,156 @@
+@import URL("../css/colors.css");
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "PtN Nameplate v2", "FiraCode Nerd Font";
+    font-size: 15px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    border-radius: 1px;
+    /*color: transparent;*/
+}
+
+window#waybar.hidden {
+    opacity: 0.5;
+}
+window#waybar.empty {
+    background-color: transparent;
+}
+/*
+window#waybar.empty #window {
+    padding: 0px;
+    border: 0px;
+    background-color: transparent;
+}*/
+
+tooltip,
+#tray menu {
+    background: @secondary_fixed-60;
+    border-radius: 15px;
+    border-width: 2px;
+    /*border-style: solid;*/
+    border: @outline;
+}
+#tray menu label,
+tooltip label {
+    font-family: "Lunchtype22";
+    color: @on_secondary_fixed;
+}
+
+#workspaces button {
+    padding: 5px 10px;
+    color: @on_secondary_container;
+    border-radius: 15px;
+}
+
+#workspaces button.focused {
+    color: @on_secondary_fixed;
+    background: @secondary-60;
+    border-radius: 15px;
+}
+
+#workspaces button.urgent {
+    color: @on_error_container;
+    background: @error_container-60;
+    border-radius: 15px;
+}
+
+#workspaces button:hover {
+    background: @secondary-60;
+    color: @on_secondary;
+    border-radius: 15px;
+}
+
+#custom-date,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#tray,
+#cpu,
+#disk,
+#idle_inhibitor,
+#memory,
+#temperature,
+#hardware,
+#idle_inhibitor,
+#custom-wlogout,
+#cava,
+#workspaces {
+    background-color: @secondary-60;
+    color: @on_secondary;
+    padding: 5px 10px;
+    margin: 5px 0px;
+}
+
+#workspaces,
+#hardware,
+#cpu,
+#temperature,
+#disk,
+#memory,
+#idle_inhibitor {
+    color: @on_secondary_container;
+    background-color: @secondary_container-60;
+}
+#cpu,
+#temperature,
+#disk,
+#memory {
+    background-color: transparent;
+}
+#workspaces {
+    border-radius: 15px 0px 0px 15px;
+}
+
+#custom-wlogout {
+    /*color: #a39ec4;*/
+    background-color: @error-60;
+    color: @on_error;
+    border-radius: 0px 15px 15px 0px;
+    padding-right: 16px;
+    margin-right: 10px;
+}
+#tray,
+#cava {
+    margin-top: 5px;
+    background: @secondary-60;
+    color: @on_secondary;
+    border-radius: 15px 15px 15px 15px;
+    /*padding: 5px;*/
+    margin-right: 16px;
+}
+#cava {
+    margin-left: 16px;
+}
+/*#tray {
+    background: @secondary_container;
+}*/
+
+#battery {
+    /*color: #9ec49f;*/
+}
+
+#battery.warning.charging,
+#battery.critical.charging {
+    color: @on_primary;
+    background: @primary-60;
+}
+
+#battery.warning:not(.charging),
+#battery.critical:not(.charging) {
+    background-color: @error-60;
+    color: @on_error;
+}
+
+#network {
+    color: @on_secondary;
+    border-radius: 0px 0px 0px 0px;
+}
+
+#pulseaudio {
+    /*color: #a5b4cb;*/
+}

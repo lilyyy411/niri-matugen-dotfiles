@@ -1,0 +1,11 @@
+spawn-at-startup "system76-scheduler-niri"
+spawn-at-startup "xwayland-satellite"
+spawn-at-startup "mpd"
+spawn-at-startup "soteria"
+spawn-at-startup "clipse" "-listen"
+spawn-at-startup "vibepanel"
+spawn-at-startup "/home/lily/projects/dotfiles/wallpaper.sh" "{{image}}"
+
+hotkey-overlay {
+    skip-at-startup
+}

@@ -1,0 +1,20 @@
+prefer-no-csd
+screenshot-path null
+
+include "input.kdl"
+include "layout.kdl"
+include "startup.kdl"
+include "animation.kdl"
+include "window-rules.kdl"
+include "binds.kdl"
+
+
+
+blur {
+    on
+    passes 3
+    // this is for a local niri fork
+    // kind "bokeh"
+    saturation 1.2
+    offset 1.5
+}

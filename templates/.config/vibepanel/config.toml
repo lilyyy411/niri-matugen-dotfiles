@@ -1,0 +1,93 @@
+# =============================================================================
+# vibepanel Configuration
+# =============================================================================
+#
+# Minimal starter config. For all available options, see:
+# https://github.com/prankstr/vibepanel/blob/main/docs/configuration.md
+#
+# Commands:
+#   vibepanel --check-config         Validate configuration
+#   vibepanel --print-example-config Print this example config
+#
+# =============================================================================
+
+[bar]
+position = "top"  # "top" or "bottom"
+size = 40
+border_radius = 30
+background_color = "{{colors.primary.default.hex}}"
+background_opacity = 0.6  # 0.0 = transparent (islands), 1.0 = solid
+
+[widgets]
+left = ["workspaces"]
+center = ["media"]
+right = [
+  "tray",
+  "updates",
+  "cpu",
+  "quick_settings",
+  "battery",
+  "clock",
+  "notifications",
+  "custom-power"
+]
+border_radius = 40
+background_opacity = 1.0
+# popover_background_opacity = 0.9  # Override popover opacity (default: max of bar and widget opacity)
+
+# Per-widget options use [widgets.<name>] sections.
+# Example:
+[widgets.clock]
+format = "%H:%M"
+
+#
+#   [widgets.battery]
+#   disabled = true
+#
+[widgets.media]
+visualizer = true  # Enable/disable cava audio visualizer (default: true)
+
+#
+# Custom widgets use the "custom-" prefix for user-defined buttons:
+#   right = ["custom-power", "custom-os", "tray", "clock"]
+#
+[widgets.custom-power]
+icon = "system-shutdown-symbolic"
+label = ""
+tooltip = "Power menu"
+on_click = "wlogout"
+on_click_right = "systemctl suspend"
+#
+#   [widgets.custom-os]
+#   image = "/usr/share/pixmaps/distro-logo.svg"  # file path (PNG, SVG, etc.)
+#   tooltip = "My Distro"
+#
+#   [widgets.custom-weather]
+#   exec = "curl -s 'wttr.in/?format=1'"
+#   template = " {output}"
+#   interval = 600
+#   on_click = "xdg-open https://wttr.in"
+#   tooltip = "Weather"
+#   max_chars = 30
+#
+# See documentation for all widget options.
+
+[theme]
+mode = "dark"  # "auto", "dark", "light", "gtk"
+accent = "{{colors.secondary.default.hex}}"  # "gtk", "none", or hex color
+animations = true  # Enable/disable all CSS transitions and animations
+# ripple = true      # Enable/disable Material Design ripple effect on click
+
+[theme.icons]
+theme = "gtk"  # "material" or "gtk"
+weight = 400  # Material icon stroke weight (100-700)
+
+[osd]
+enabled = false
+position = "bottom"  # "bottom", "top", "left", "right"
+
+[advanced]
+compositor = "niri"  # "auto", "hyprland", "niri", "mango"
+
+# Custom CSS: place style.css in same directory as this file.
+# See documentation for available CSS variables and classes.

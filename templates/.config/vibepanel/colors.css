@@ -1,0 +1,13 @@
+/*
+* Css Colors
+* Generated with Matugen
+*/
+
+/* All MD3 colors */
+<* for name, value in colors *>
+@define-color {{name}} {{value.default.hex}};<* endfor *>
+
+<* for i in 1..10 *>
+<* for name, value in colors *>
+@define-color {{name}}-{{{{i}} * 10}} alpha({{value.default.hex}}, {{ {{i}} * 0.1}});<* endfor *>
+<* endfor *>

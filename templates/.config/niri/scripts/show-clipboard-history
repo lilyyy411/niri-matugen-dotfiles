@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+python $SCRIPT_DIR/get-history.py  list\
+    | wofi -I --dmenu --cache-file=/dev/null -Dimage_size=100 -Ddynamic_lines=true\
+      -Dpre_display_exec=true --pre-display-cmd "python $SCRIPT_DIR/get-history.py trim %s"\
+    | python $SCRIPT_DIR/get-history.py copy\
+    | wl-copy

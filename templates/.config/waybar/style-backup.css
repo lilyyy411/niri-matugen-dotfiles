@@ -1,0 +1,110 @@
+@import URL("../css/colors.css");
+* {
+    font-family: "Iosevka Nerd Font";
+    font-size: 14px;
+    font-weight: 500;
+}
+
+window#waybar {
+    background: transparent;
+    border-radius: 1px;
+    color: transparent;
+}
+
+window#waybar.hidden {
+    opacity: 0.5;
+}
+window#waybar.empty {
+    background-color: transparent;
+}
+
+window#waybar.empty #window {
+    padding: 0px;
+    border: 0px;
+    background-color: transparent;
+}
+
+tooltip {
+    background: @secondary;
+    color: @on_secondary;
+    font-size: 15px;
+    border: 1px solid @outline;
+}
+
+/*-----module groups----*/
+.modules-right {
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 20px;
+}
+
+.modules-center {
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 20px;
+}
+
+.modules-left {
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 20px;
+}
+
+#workspaces button {
+    color: @secondary_fixed;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#workspaces button.active {
+    color: @on_secondary;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#workspaces button:hover {
+    /*color: @secondary;*/
+    background: @secondary;
+    border: 0px;
+    /*padding-left: 8px;
+    padding-right: 8px;*/
+}
+
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#pulseaudio,
+#taskbar,
+#temperature,
+#window,
+#wireplumber,
+#workspaces,
+#battery,
+#tray,
+#mpd {
+    background: linear-gradient(to bottom, @secondary-80 50%, @outline-80);
+    color: @on_secondary;
+    border: 1px solid @outline;
+    border-radius: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin: 0px 3px 0px 3px;
+}
+
+#temperature.critical {
+    color: @on_error;
+    background-color: @error;
+}
+#battery .charging {
+    background: @error;
+    color: @on_error;
+}

@@ -1,0 +1,99 @@
+@import URL("/home/lily/.config/css/colors.css");
+/*@define-color surface @primary_container;
+@define-color on_surface @on_primary_container;*/
+* {
+    font-family: "LunchType 23";
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+}
+
+*:selected {
+    color: @on_primary;
+    background-color: @primary;
+}
+
+/* Selected Entry */
+#entry:selected {
+    color: @on_primary;
+    background-color: @primary;
+    border-radius: 5px;
+}
+
+#entry:selected #text {
+    color: @on_primary;
+}
+
+/* Window */
+window {
+    margin: 0px;
+    padding: 10px;
+    border: 3px solid @outline;
+    border-radius: 7px;
+    background-color: @secondary;
+}
+
+/* Slide In */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Inner Box */
+#inner-box {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    background-color: @surface;
+    animation: fadeIn 0.5s ease-in-out both;
+}
+
+/* Fade In */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Outer Box */
+#outer-box {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    background-color: @surface;
+}
+
+/* Scroll */
+#scroll {
+    margin: 0px;
+    padding: 10px;
+    border: none;
+}
+/* what the fuck why does gtk have a magical define-color for this */
+@define-color placeholder_text_color @on_secondary_container;
+/* Input */
+#input {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    color: @on_secondary_container;
+    background-color: @secondary_container;
+    animation: fadeIn 0.5s ease-in-out both;
+}
+#input image {
+    color: @on_secondary_container;
+}
+/* Text */
+#text {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    color: @on_surface;
+}
