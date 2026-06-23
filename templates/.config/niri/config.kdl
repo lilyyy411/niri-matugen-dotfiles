@@ -13,8 +13,6 @@ include "binds.kdl"
 blur {
     on
     passes 3
-    // this is for a local niri fork
-    // kind "bokeh"
     saturation 1.2
     offset 1.5
 }

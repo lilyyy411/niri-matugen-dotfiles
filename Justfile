@@ -6,7 +6,7 @@ gen-templates image: gen-matugen-config
     {{ justfile_directory() }}/wallpaper.sh {{ image }}
 
 gen-matugen-config: show-matugen make-build
-    {{ python }} gen/gen-matugen-config.py ./build/matugen.toml ./templates
+    {{ python }} gen/gen-matugen-config.py ./build/matugen.toml ./templates ~/.config/zen/t0hr8a7m."Default Profile/prefs.js"
 
 show-matugen:
     @echo Found matugen at {{ matugen }}

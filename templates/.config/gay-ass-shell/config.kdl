@@ -1,0 +1,10 @@
+bg_alpha 0.5
+theme {
+    name "silly bean"
+    background "{{colors.background.default.hex}}"
+    text "{{colors.on_surface.default.hex}}"
+    primary "{{colors.primary.default.hex}}"
+    success "{{colors.tertiary.default.hex}}"
+    warning "{{colors.secondary.default.hex}}"
+    danger "{{colors.error.default.hex}}"
+}

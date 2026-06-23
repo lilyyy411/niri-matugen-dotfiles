@@ -1,0 +1,3 @@
+.zen-browser-generic-background {
+    --zen-main-browser-background: {{colors.background.default.hex}}cc !important;
+}

@@ -11,12 +11,13 @@ I do not provide a proper install script (for now) because I use some manually p
 - Bottom
 - Cliphist (only scripts for viewing history with Wofi + starting it on Niri boot)
 - Fish (add `fish_config theme choose lily-matugen` into `~/.config/fish/config.fish`)
+- Foot
 - Ghostty
 - Gtk 3 and Gtk 4 (wip but usable)
 - Gtk icons ([Midnight Sonata](<https://github.com/SethStormR/Midnight-Sonata>), but patched to be truly monochrome and a matugen template).
 - Hyfetch (custom ascii logo in `.config/neofetch-logo`, does not configure to use it by default for obvious reasons)
 - Lightdm (requires [`Waifu Greeter`](<https://github.com/anime-kun32/waifu-greeter>) theme and the `wallpaper.sh` script requires write permissions to `/usr/share/web-greeter/themes/waifu-greeter/assets/bg.jpg`)
-- Niri (be careful there are some things that depend specifically on my current setup).
+- Niri (be careful, there are some things that depend specifically on my current setup).
 - Soteria (wip)
 - Starship
 - Swaylock

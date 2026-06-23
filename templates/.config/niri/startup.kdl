@@ -5,7 +5,7 @@ spawn-at-startup "soteria"
 spawn-at-startup "clipse" "-listen"
 spawn-at-startup "vibepanel"
 spawn-at-startup "/home/lily/projects/dotfiles/wallpaper.sh" "{{image}}"
-
+spawn-at-startup "/home/lily/projects/desktop-shell/target/release/gay-ass-shell" "daemon"
 hotkey-overlay {
     skip-at-startup
 }

@@ -1,171 +1,144 @@
 /*
-Title: Dither-glitch
-Authors: Joe Hsu<jhsu.x1@gmail.com>
-Desc: Dither fade in, glitch out
-Demo: ./demos/dither-glitch.gif
+Title: glide
+Authors: Justin Garza <JGarza9788@gmail.com>
+Desc: a softer Apple-like glide preset for niri.
+Demo: ./demos/glide.gif
+Notes:
+- Smooth, polished, low-bounce motion.
+- Open is slightly more luxurious than close.
+- Uses custom shaders where niri supports them.
 */
 
 animations {
+    // Uncomment while tuning.
+    slowdown 1.2
+
+
     window-open {
-        duration-ms 380
-        curve "linear"
+        duration-ms 260
+        // close to a polished macOS-style ease-out feel
+        curve "cubic-bezier" 0.22 1.0 0.36 1.0
 
         custom-shader r"
-            float hash(vec2 p) {
-                return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-            }
-
-            float noise(vec2 p) {
-                vec2 i = floor(p);
-                vec2 f = fract(p);
-
-                float a = hash(i);
-                float b = hash(i + vec2(1.0, 0.0));
-                float c = hash(i + vec2(0.0, 1.0));
-                float d = hash(i + vec2(1.0, 1.0));
-
-                vec2 u = f * f * (3.0 - 2.0 * f);
-
-                return mix(a, b, u.x) +
-                       (c - a) * u.y * (1.0 - u.x) +
-                       (d - b) * u.y * u.x;
-            }
-
-            vec4 sample_rgb_split(vec2 uv, float amt) {
-                vec2 off = vec2(amt, 0.0);
-                float r = texture2D(niri_tex, uv + off).r;
-                float g = texture2D(niri_tex, uv).g;
-                float b = texture2D(niri_tex, uv - off).b;
-                float a = texture2D(niri_tex, uv).a;
-                return vec4(r, g, b, a);
-            }
-
             vec4 open_color(vec3 coords_geo, vec3 size_geo) {
-                if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
-                    coords_geo.y < 0.0 || coords_geo.y > 1.0) {
-                    return vec4(0.0);
-                }
-
                 float p = niri_clamped_progress;
+
+                // Slight up-to-down settle.
+                float slide_px = (1.0 - p) * 60.0;
+                float slide_geo = slide_px / max(size_geo.x, 1.0);
+
+                // Very subtle scale-up into place.
+                float scale = 0.985 + 0.015 * p;
+
                 vec2 uv = coords_geo.xy;
+                uv -= vec2(0.5, 0.5);
+                uv /= scale;
+                uv += vec2(0.5, 0.5);
 
-                vec3 coords_tex = niri_geo_to_tex * coords_geo;
-                vec2 tex_uv = coords_tex.st;
+                uv.y -= slide_geo;
 
-                // Slight unstable horizontal glitch early in the animation
-                float early = 1.0 - smoothstep(0.0, 0.35, p);
-                float band = step(0.72, noise(vec2(floor(uv.y * 42.0), floor(p * 30.0))));
-                float tear = (noise(vec2(floor(uv.y * 90.0), floor(p * 50.0))) - 0.5)
-                           * 0.045 * early * band;
+                vec3 coords_tex = niri_geo_to_tex * vec3(uv, 1.0);
+                vec4 color = texture2D(niri_tex, coords_tex.st);
 
-                tex_uv.x += tear;
+                // Gentle fade-in.
+                color *= p;
 
-                // Tiny RGB split that settles as the window appears
-                float rgb_amt = 0.008 * early;
-                vec4 color = sample_rgb_split(tex_uv, rgb_amt);
-
-                // Ordered-ish dithering / noise threshold reveal
-                float pix = floor(uv.x * 120.0) + floor(uv.y * 120.0) * 131.0;
-                float dither = fract(sin(pix * 91.3458) * 47453.5453);
-
-                // Mix in animated noise so it feels glitchy rather than clean ordered dithering
-                float n = noise(uv * 16.0 + vec2(0.0, p * 18.0));
-                float threshold = mix(dither, n, 0.45);
-
-                // Reveal nonlinearly so it 'snaps in' more at the end
-                float reveal = smoothstep(0.0, 1.0, pow(p, 1.35));
-                float alpha_mask = step(threshold, reveal);
-
-                // Soften the harsh on/off just a little
-                float soft = smoothstep(reveal - 0.10, reveal + 0.02, threshold);
-                float alpha = mix(alpha_mask, 1.0 - soft, 0.35);
-
-                // Scanline shimmer early on
-                float scan = sin(uv.y * 240.0 + p * 35.0) * 0.5 + 0.5;
-                float scan_amt = 0.10 * early * scan;
-
-                color.rgb += scan_amt;
-                color.rgb *= 0.92 + 0.08 * smoothstep(0.0, 1.0, p);
-
-                return vec4(color.rgb, color.a * alpha);
+                return color;
             }
         "
     }
 
+    // Original by Lemmy: https://github.com/ItsLemmy
     window-close {
-        duration-ms 140
-        curve "linear"
+      duration-ms 180
+      curve "cubic-bezier" 0.32 0.0 0.67 0.0
+      custom-shader r"
+        vec4 fall_and_rotate(vec3 coords_geo, vec3 size_geo) {
+          float progress = niri_clamped_progress * niri_clamped_progress;
+          vec2 coords = (coords_geo.xy - vec2(0.5, 1.0)) * size_geo.xy;
+          coords.y -= progress * 1440.0;
+          float random = (niri_random_seed - 0.5) / 2.0;
+          random = sign(random) - random;
+          float max_angle = 0.5 * random;
+          float angle = progress * max_angle;
+          mat2 rotate = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+          coords = rotate * coords;
+          coords_geo = vec3(coords / size_geo.xy + vec2(0.5, 1.0), 1.0);
+          vec3 coords_tex = niri_geo_to_tex * coords_geo;
+          vec4 color = texture2D(niri_tex, coords_tex.st);
+          color.a *= (1.0 - progress);
+
+          return color;
+        }
+        vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+          return fall_and_rotate(coords_geo, size_geo);
+        }
+      "
+    }
+
+    window-resize {
+        // Resizes should feel soft but controlled.
+        spring damping-ratio=1.0 stiffness=720 epsilon=0.0001
 
         custom-shader r"
-            float hash(vec2 p) {
-                return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-            }
+            vec4 resize_color(vec3 coords_curr_geo, vec3 size_curr_geo) {
+                // Show the next texture, but with a very mild softening
+                // toward the edges during motion for a less harsh resize feel.
+                vec3 coords_tex_next = niri_geo_to_tex_next * coords_curr_geo;
+                vec4 color = texture2D(niri_tex_next, coords_tex_next.st);
 
-            float noise(vec2 p) {
-                vec2 i = floor(p);
-                vec2 f = fract(p);
+                vec2 uv = coords_curr_geo.xy;
+                float edge =
+                    min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y));
 
-                float a = hash(i);
-                float b = hash(i + vec2(1.0, 0.0));
-                float c = hash(i + vec2(0.0, 1.0));
-                float d = hash(i + vec2(1.0, 1.0));
+                float vignette = smoothstep(0.0, 0.06, edge);
+                color.rgb *= mix(0.985, 1.0, vignette);
 
-                vec2 u = f * f * (3.0 - 2.0 * f);
-
-                return mix(a, b, u.x) +
-                       (c - a) * u.y * (1.0 - u.x) +
-                       (d - b) * u.y * u.x;
-            }
-
-            vec4 close_color(vec3 coords_geo, vec3 size_geo) {
-                if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
-                    coords_geo.y < 0.0 || coords_geo.y > 1.0) {
-                    return vec4(0.0);
-                }
-
-                float p = niri_clamped_progress;
-                vec2 uv = coords_geo.xy;
-
-                vec3 coords_tex = niri_geo_to_tex * coords_geo;
-                vec2 tex_uv = coords_tex.st;
-
-                // Aggressive per-band horizontal tearing
-                float line_id = floor(uv.y * 70.0);
-                float band_noise = noise(vec2(line_id, floor(p * 24.0)));
-                float band_mask = step(0.45, band_noise);
-
-                float tear = (noise(vec2(line_id * 1.7, floor(p * 40.0))) - 0.5)
-                           * 0.18 * band_mask;
-
-                // Add finer secondary tearing
-                float micro = (noise(vec2(floor(uv.y * 220.0), floor(p * 80.0))) - 0.5)
-                            * 0.04;
-
-                tex_uv.x += tear + micro;
-
-                // Channel-separated glitch
-                float ch = 0.012 + 0.028 * p;
-                float r = texture2D(niri_tex, tex_uv + vec2(ch, 0.0)).r;
-                float g = texture2D(niri_tex, tex_uv).g;
-                float b = texture2D(niri_tex, tex_uv - vec2(ch, 0.0)).b;
-                float a = texture2D(niri_tex, tex_uv).a;
-
-                vec4 color = vec4(r, g, b, a);
-
-                // Bright digital tearing streaks
-                float streak = step(0.82, noise(vec2(line_id * 2.3, floor(p * 60.0))));
-                color.rgb += streak * band_mask * 0.22;
-
-                // Rapid fade with glitch hanging on for a moment
-                float alpha = 1.0 - smoothstep(0.0, 1.0, p);
-                alpha *= 1.0 - smoothstep(0.45, 1.0, p);
-
-                // Break the window apart near the end
-                float breakup = step(noise(uv * 24.0 + vec2(0.0, p * 30.0)), 1.0 - p * 1.15);
-                alpha *= breakup;
-
-                return vec4(color.rgb, color.a * alpha);
+                return color;
             }
         "
+    }
+
+// ***animations below do not use a shaders ***
+// these are not required
+
+
+    workspace-switch {
+        // Smooth, composed, no bounce.
+        spring damping-ratio=1.0 stiffness=760 epsilon=0.0001
+    }
+
+    horizontal-view-movement {
+        // Main "camera glide" for scrollable movement.
+        spring damping-ratio=1.0 stiffness=640 epsilon=0.0001
+    }
+
+    window-movement {
+        // Individual windows shift with a slightly tighter response
+        // than the camera, so it feels organized.
+        spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
+    }
+
+    config-notification-open-close {
+        // Less playful, more refined than the default underdamped feel.
+        spring damping-ratio=1.0 stiffness=820 epsilon=0.001
+    }
+
+    exit-confirmation-open-close {
+        spring damping-ratio=1.0 stiffness=560 epsilon=0.01
+    }
+
+    screenshot-ui-open {
+        duration-ms 220
+        curve "cubic-bezier" 0.22 1.0 0.36 1.0
+    }
+
+    overview-open-close {
+        // Overview should feel smooth and premium, not springy/bouncy.
+        spring damping-ratio=1.0 stiffness=620 epsilon=0.0001
+    }
+
+    recent-windows-close {
+        spring damping-ratio=1.0 stiffness=680 epsilon=0.001
     }
 }

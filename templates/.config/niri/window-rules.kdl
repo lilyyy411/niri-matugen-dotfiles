@@ -4,11 +4,11 @@ window-rule {
     open-floating true
 }
 
-window-rule {
-    match app-id="^org.gnome.Nautilus$"
-    match title="Open Files"
-    opacity 0.75
-}
+// window-rule {
+//     match app-id="^org.gnome.Nautilus$"
+//     match title="Open Files"
+//     opacity 0.75
+// }
 
 
 // Enable rounded corners and blurred background for all windows.
@@ -30,8 +30,11 @@ window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"waterfox$"# title="^Picture-in-Picture$"
+    match  title="^Picture-in-Picture$" // app-id=r#"waterfox$"#
     open-floating true
+    default-column-width { fixed 549; }
+    default-window-height { fixed 343; }
+    default-floating-position x=100 y=100 relative-to="bottom-right"
 }
 // Open the Waterfox picture-in-picture player as floating by default.
 window-rule {
@@ -59,6 +62,7 @@ layer-rule {
 layer-rule {
     match namespace="^vibepanel-.*-popover$"
     match namespace="^logout_dialog$"
+    match namespace="^launcher$"
     background-effect {
         xray false
         blur true
@@ -73,6 +77,11 @@ layer-rule {
     match namespace="^vibepanel-.*-popover$"
     geometry-corner-radius 12
     baba-is-float true
+}
+
+layer-rule {
+    match namespace="^launcher$"
+    geometry-corner-radius 16
 }
 
 window-rule {

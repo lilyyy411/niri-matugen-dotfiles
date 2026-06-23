@@ -14,6 +14,7 @@ def run_matugen(entries: list[str], argv: list[str]):
     with tempfile.NamedTemporaryFile("w+") as f:
         # print("Making temp config file", f.name)
         _ = f.write("[config]\nversion_check = false\n" + ("\n".join(entries)))
+        f.flush()
         # print("Running matugen")
         _ = subprocess.run(["matugen", "-c", f.name, *argv])
 

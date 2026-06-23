@@ -7,7 +7,7 @@ x = 14
 y = 14
 
 [font]
-normal = { family = "FiraCode", style = "Regular" }
+normal = { family = "Annotation Mono", style = "Regular" }
 
 [colors]
 # transparent_background_colors = true
